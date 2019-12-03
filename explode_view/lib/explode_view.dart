@@ -1,7 +1,11 @@
 library explode_view;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
+import 'package:flutter/material.dart';
+
+class ExplodeView extends RefreshIndicator{
+  const ExplodeView({
+    Key key,
+    Widget child,
+    RefreshCallback onRefresh,
+  }) : super(key: key, child: child, onRefresh: onRefresh);
 }
