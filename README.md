@@ -1,5 +1,5 @@
 # Explode View
-A new open-source Flutter project that enables the developers to quickly enhance the ui of their application and can easily get started with the Flutter animation. The ui has been inspired from Redmi's uninstall application animation shown [here](https://github.com/mdg-soc-19/explode-view/gif/explode-view-idea.gif).
+A new open-source Flutter project that enables the developers to quickly enhance the ui of their application and can easily get started with the Flutter animation. The ui has been inspired from Redmi's uninstall application animation shown [here](https://github.com/mdg-soc-19/explode-view/blob/master/gif/explode-view-idea.gif).
 
 This project contains the features of Flutter Animation that are required to complete an amazing Flutter application.
 
