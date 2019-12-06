@@ -36,8 +36,8 @@ class ExplodeView extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
-    return new MaterialApp(
-      home: new ExplodeViewBody(screenSize: size, imagePath: imagePath, imagePosFromLeft: imagePosFromLeft, imagePosFromTop: imagePosFromTop),
+    return new Container(
+      child: new ExplodeViewBody(screenSize: size, imagePath: imagePath, imagePosFromLeft: imagePosFromLeft, imagePosFromTop: imagePosFromTop),
     );
   }
 }
