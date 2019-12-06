@@ -10,7 +10,7 @@ import 'package:vector_math/vector_math_64.dart' hide Colors;
 
 import 'package:image/image.dart' as img;
 import 'package:flutter/services.dart' show rootBundle;
-import 'dart:math';
+import 'dart:math' as math;
 
 // The duration for the scattering the particles and fade out
 const explosionDuration = Duration(milliseconds: 1500);
@@ -18,12 +18,18 @@ const explosionDuration = Duration(milliseconds: 1500);
 // The duration for shaking the image while creating the particles
 const shakingDuration = Duration(milliseconds: 3000);
 
+const noOfParticles = 64;
+
 class ExplodeView extends StatelessWidget {
 
   final String imagePath;
+  final double imagePosFromLeft;
+  final double imagePosFromTop;
 
   const ExplodeView({
-    @required this.imagePath
+    @required this.imagePath,
+    @required this.imagePosFromLeft,
+    @required this.imagePosFromTop
   });
 
   @override
@@ -31,7 +37,7 @@ class ExplodeView extends StatelessWidget {
 
     final size = MediaQuery.of(context).size;
     return new MaterialApp(
-      home: new ExplodeViewBody(screenSize: size, imagePath: imagePath),
+      home: new ExplodeViewBody(screenSize: size, imagePath: imagePath, imagePosFromLeft: imagePosFromLeft, imagePosFromTop: imagePosFromTop),
     );
   }
 }
@@ -39,8 +45,10 @@ class ExplodeView extends StatelessWidget {
 class ExplodeViewBody extends StatefulWidget {
   final Size screenSize;
   final String imagePath;
+  double imagePosFromLeft = 200;
+  double imagePosFromTop = 400;
 
-  ExplodeViewBody({Key key, @required this.screenSize, @required this.imagePath}) : super(key: key);
+  ExplodeViewBody({Key key, @required this.screenSize, @required this.imagePath, @required this.imagePosFromLeft, @required this.imagePosFromTop}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ExplodeViewState();
@@ -54,7 +62,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
   bool useSnapshot = true;
   bool isImage = true;
-  Random random;
+  math.Random random;
 
   final List<Particle> particles = [];
 
@@ -71,7 +79,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
     super.initState();
 
     currentKey = useSnapshot ? paintKey : imageKey;
-    random = new Random();
+    random = new math.Random();
 
     imageAnimationController = AnimationController(
       vsync: this,
@@ -81,7 +89,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
   }
 
   Vector3 _shakeImage() {
-    return Vector3(sin((imageAnimationController.value) * pi * 20.0) * 8, 0.0, 0.0);
+    return Vector3(math.sin((imageAnimationController.value) * math.pi * 20.0) * 8, 0.0, 0.0);
   }
 
   Future<void> loadImageBundleBytes() async {
@@ -130,7 +138,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
     int hex = abgrToArgb(pixel32);
 
-//    _stateController.add(Color(hex));
+    _stateController.add(Color(hex));
 
     Color returnColor = Color(hex);
 
@@ -169,7 +177,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
                     final List<Color> colors = [];
 
-                    for(int i = 0; i < 64; i++){
+                    for(int i = 0; i < noOfParticles; i++){
                       setState(() {
                         distFromLeft = imagePositionOffsetX.toDouble();
                         distFromTop = (imagePositionOffsetY - 60).toDouble();
@@ -191,7 +199,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
                     Future.delayed(Duration(milliseconds: 3500), () {
 
-                      for(int i = 0; i < 64; i++){
+                      for(int i = 0; i < noOfParticles; i++){
                         if(i < 21){
                           particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (imageCenterPositionX - imagePositionOffsetX + (i * 0.7)) * 0.1, offsetY: (imageCenterPositionY - (imagePositionOffsetY - 60)) * 0.1, newOffsetX: imagePositionOffsetX + (i * 0.7), newOffsetY: imagePositionOffsetY - 60));
                         }else if(i >= 21 && i < 42){
@@ -207,7 +215,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
                     });
                   },
                   child: Container(
-                    alignment: FractionalOffset(0.35, 0.75),
+                    alignment: FractionalOffset((widget.imagePosFromLeft / widget.screenSize.width), (widget.imagePosFromTop / widget.screenSize.height)),
                     child: Transform(
                       transform: Matrix4.translation(_shakeImage()),
                       child: Image.asset(
@@ -252,7 +260,7 @@ class Particle extends _ExplodeViewState {
   double offsetX=0.0, offsetY=0.0;
   double newOffsetX = 0.0, newOffsetY = 0.0;
 
-  static final randomValue = Random();
+  static final randomValue = math.Random();
   AnimationController animationController;
 
   Animation translateXAnimation, negatetranslateXAnimation;
@@ -268,7 +276,7 @@ class Particle extends _ExplodeViewState {
 
     position = Offset(this.offsetX, this.offsetY);
 
-    Random random = new Random();
+    math.Random random = new math.Random();
     this.lastXOffset = random.nextDouble() * 100;
     this.lastYOffset = random.nextDouble() * 100;
 
