@@ -56,6 +56,8 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
   bool isImage = true;
   Random random;
 
+  final List<Particle> particles = [];
+
   AnimationController imageAnimationController;
 
   double imageSize = 50.0;
@@ -150,7 +152,9 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
         builder: (buildContext, snapshot) {
           return Stack(
             children: <Widget>[
-
+              RepaintBoundary(
+                key: paintKey,
+              )
             ],
           );
         },
@@ -158,7 +162,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
           Container(
             child: Stack(
               children: <Widget>[
-                
+                for(Particle particle in particles) particle.startParticleAnimation()
               ],
             ),
           )
