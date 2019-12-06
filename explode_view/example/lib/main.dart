@@ -272,8 +272,6 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
 
     int hex = abgrToArgb(pixel32);
 
-//    print("ljkdfhkidhfkjhfkjfhgkjhgkjghdkjhgkjg         "+hex.toString());
-
     _stateController.add(Color(hex));
 
     Color returnColor = Color(hex);
@@ -348,8 +346,6 @@ class Particle extends _MyHomePageState{
                 child: FadeTransition(
                   opacity: fadingAnimation,
                   child: Container(
-//                      width: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-//                      height: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
                     width: particleSize.value>5 ? particleSize.value : 5,
                     height: particleSize.value>5 ? particleSize.value : 5,
                     decoration: BoxDecoration(
@@ -365,8 +361,6 @@ class Particle extends _MyHomePageState{
                 child: FadeTransition(
                   opacity: fadingAnimation,
                   child: Container(
-//                      width: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-//                      height: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
                     width: particleSize.value>5 ? particleSize.value : 5,
                     height: particleSize.value>5 ? particleSize.value : 5,
                     decoration: BoxDecoration(
@@ -382,8 +376,6 @@ class Particle extends _MyHomePageState{
                 child: FadeTransition(
                   opacity: fadingAnimation,
                   child: Container(
-//                      width: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-//                      height: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
                     width: particleSize.value>5 ? particleSize.value : 5,
                     height: particleSize.value>5 ? particleSize.value : 5,
                     decoration: BoxDecoration(
@@ -399,8 +391,6 @@ class Particle extends _MyHomePageState{
                 child: FadeTransition(
                   opacity: fadingAnimation,
                   child: Container(
-//                      width: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-//                      height: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
                     width: particleSize.value>5 ? particleSize.value : 5,
                     height: particleSize.value>5 ? particleSize.value : 5,
                     decoration: BoxDecoration(

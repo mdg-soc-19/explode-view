@@ -133,13 +133,76 @@ class Particle extends _ExplodeViewState {
 
   }
 
-  buildParticle() {
+  startParticleAnimation() {
     animationController.forward();
 
     return Container(
       alignment: FractionalOffset((newOffsetX / screenSize.width), (newOffsetY / screenSize.height)),
       child: AnimatedBuilder(
         animation: animationController,
+        builder: (BuildContext context, Widget widget) {
+          if(id % 4 == 0){
+            return Transform.translate(
+              offset: Offset(translateXAnimation.value, translateYAnimation.value),
+              child: FadeTransition(
+                opacity: fadingAnimation,
+                child: Container(
+                  width: particleSize.value>5 ? particleSize.value : 5,
+                  height: particleSize.value>5 ? particleSize.value : 5,
+                  decoration: BoxDecoration(
+                      color: colors,
+                      shape: BoxShape.circle
+                  ),
+                ),
+              )
+            );
+          }else if(id % 4 == 1){
+            return Transform.translate(
+              offset: Offset(negatetranslateXAnimation.value, translateYAnimation.value),
+              child: FadeTransition(
+                opacity: fadingAnimation,
+                child: Container(
+                  width: particleSize.value>5 ? particleSize.value : 5,
+                  height: particleSize.value>5 ? particleSize.value : 5,
+                  decoration: BoxDecoration(
+                      color: colors,
+                      shape: BoxShape.circle
+                  ),
+                ),
+              )
+            );
+          }else if(id % 4 == 2){
+            return Transform.translate(
+              offset: Offset(translateXAnimation.value, negatetranslateYAnimation.value),
+              child: FadeTransition(
+                opacity: fadingAnimation,
+                child: Container(
+                  width: particleSize.value>5 ? particleSize.value : 5,
+                  height: particleSize.value>5 ? particleSize.value : 5,
+                  decoration: BoxDecoration(
+                      color: colors,
+                      shape: BoxShape.circle
+                  ),
+                ),
+              )
+            );
+          }else{
+            return Transform.translate(
+              offset: Offset(negatetranslateXAnimation.value, negatetranslateYAnimation.value),
+              child: FadeTransition(
+                opacity: fadingAnimation,
+                child: Container(
+                  width: particleSize.value>5 ? particleSize.value : 5,
+                  height: particleSize.value>5 ? particleSize.value : 5,
+                  decoration: BoxDecoration(
+                      color: colors,
+                      shape: BoxShape.circle
+                  ),
+                ),
+              )
+            );
+          }
+        },
       ),
     );
   }
