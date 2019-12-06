@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:vector_math/vector_math_64.dart' hide Colors;
 
 import 'package:image/image.dart' as img;
 import 'package:flutter/services.dart' show rootBundle;
@@ -72,6 +73,10 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
       duration: Duration(milliseconds: 3000),
     );
 
+  }
+
+  Vector3 _shakeImage() {
+    return Vector3(sin((imageAnimationController.value) * pi * 20.0) * 8, 0.0, 0.0);
   }
 
   Future<void> loadImageBundleBytes() async {

@@ -277,6 +277,7 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
     return returnColor;
   }
 
+  // As image uses KML color format i.e. #AABBRRGG, convert this format to normal #AARRGGBB
   int abgrToArgb(int argbColor) {
     int r = (argbColor >> 16) & 0xFF;
     int b = argbColor & 0xFF;
