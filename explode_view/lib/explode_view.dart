@@ -169,26 +169,42 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
                     final List<Color> colors = [];
 
-                    for(int i=0;i<64;i++){
+                    for(int i = 0; i < 64; i++){
                       setState(() {
                         distFromLeft = imagePositionOffsetX.toDouble();
-                        distFromTop = (imagePositionOffsetY-60).toDouble();
+                        distFromTop = (imagePositionOffsetY - 60).toDouble();
                       });
-                      if(i<21){
-                        getPixel(imagePosition, Offset(imagePositionOffsetX+i*0.7, imagePositionOffsetY-(60)), box.size.width).then((value) {
+                      if(i < 21){
+                        getPixel(imagePosition, Offset(imagePositionOffsetX + (i * 0.7), imagePositionOffsetY - 60), box.size.width).then((value) {
                           colors.add(value);
                         });
-                      }else if(i>=21 && i<42){
-                        getPixel(imagePosition, Offset(imagePositionOffsetX+i*0.7, imagePositionOffsetY-(52)), box.size.width).then((value) {
+                      }else if(i >= 21 && i < 42){
+                        getPixel(imagePosition, Offset(imagePositionOffsetX + (i * 0.7), imagePositionOffsetY - 52), box.size.width).then((value) {
                           colors.add(value);
                         });
                       }else{
-                        getPixel(imagePosition, Offset(imagePositionOffsetX+i*0.7, imagePositionOffsetY-(68)), box.size.width).then((value) {
+                        getPixel(imagePosition, Offset(imagePositionOffsetX + (i * 0.7), imagePositionOffsetY - 68), box.size.width).then((value) {
                           colors.add(value);
                         });
                       }
                     }
 
+                    Future.delayed(Duration(milliseconds: 3500), () {
+
+                      for(int i = 0; i < 64; i++){
+                        if(i < 21){
+                          particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (imageCenterPositionX - imagePositionOffsetX + (i * 0.7)) * 0.1, offsetY: (imageCenterPositionY - (imagePositionOffsetY - 60)) * 0.1, newOffsetX: imagePositionOffsetX + (i * 0.7), newOffsetY: imagePositionOffsetY - 60));
+                        }else if(i >= 21 && i < 42){
+                          particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (imageCenterPositionX - imagePositionOffsetX + (i * 0.5)) * 0.1, offsetY: (imageCenterPositionY - (imagePositionOffsetY - 52)) * 0.1, newOffsetX: imagePositionOffsetX + (i * 0.7), newOffsetY: imagePositionOffsetY - 52));
+                        }else{
+                          particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (imageCenterPositionX - imagePositionOffsetX + (i * 0.9)) * 0.1, offsetY: (imageCenterPositionY - (imagePositionOffsetY - 68)) * 0.1, newOffsetX: imagePositionOffsetX + (i * 0.7), newOffsetY: imagePositionOffsetY - 68));
+                        }
+                      }
+
+                      setState(() {
+                        isImage = false;
+                      });
+                    });
                   },
                   child: Container(
                     alignment: FractionalOffset(0.35, 0.75),

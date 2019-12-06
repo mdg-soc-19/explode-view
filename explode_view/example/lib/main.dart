@@ -182,7 +182,6 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
                                       });
 
                                     });
-
                                   },
                                   child: Container(
                                     alignment: FractionalOffset(0.35, 0.75),
@@ -204,15 +203,7 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
                     Container(
                       child: Stack(
                         children: <Widget>[
-                          for(Particle particle in particles) particle.buildWidget(),
-                          RaisedButton(
-                            child: Text("Go Back"),
-                            onPressed: () {
-                              setState(() {
-                                isImage = true;
-                              });
-                            },
-                          ),
+                          for(Particle particle in particles) particle.buildWidget()
                         ],
                       ),
                     ),
