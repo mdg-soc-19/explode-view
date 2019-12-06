@@ -38,22 +38,22 @@ class MyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    String imagePath = 'assets/images/swiggy.png';
     final size = MediaQuery.of(context).size;
     return new MaterialApp(
-      home: new DemoBody(screenSize: size),
+      home: new DemoBody(screenSize: size, imagePath: imagePath,),
     );
   }
 }
 
 class DemoBody extends StatefulWidget {
   final Size screenSize;
+  final String imagePath;
 
-  DemoBody({Key key, @required this.screenSize}) : super(key: key);
+  DemoBody({Key key, @required this.screenSize, @required this.imagePath}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return new _MyHomePageState();
-  }
+  State<StatefulWidget> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
@@ -64,11 +64,11 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
   final List<Particle> particles = [];
   Random random;
 
+
   double leftPos=10.0, topPos=10.0;
 
   bool useSnapshot = true;
   bool isImage = true;
-  String imagePath = 'assets/images/chrome.png';
   double imageSize = 50.0;
 
   GlobalKey currentKey;
@@ -90,145 +90,145 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
       vsync: this,
       duration: Duration(milliseconds: 3000),
     );
-    imageAnimation = Tween<double>(
-      begin: 50.0,
-      end: 500.0,
-    ).animate(imageAnimationController);
 
   }
 
   Vector3 _shake() {
-    double progress = imageAnimationController.value;
-    double offset = sin(progress * pi * 5.0);
-    return Vector3(offset * 2.0, 0.0, 0.0);
+    return Vector3(sin((imageAnimationController.value) * pi * 20.0) * 8, 0.0, 0.0);
   }
 
   @override
   void dispose(){
+    imageAnimationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-          backgroundColor: Colors.black,
-          appBar: PreferredSize(
-            preferredSize: Size(double.infinity, 50),
-            child: AppBar(
-              title: Text("Explode View"),
-              automaticallyImplyLeading: false,
+        child: Scaffold(
+            backgroundColor: Colors.black,
+            appBar: PreferredSize(
+              preferredSize: Size(double.infinity, 50),
+              child: AppBar(
+                title: Text("Explode View"),
+                automaticallyImplyLeading: false,
+              ),
             ),
-          ),
-          body: Container(
-              child: isImage
-                  ? StreamBuilder(
-                  initialData: Colors.green[500],
-                  stream: _stateController.stream,
-                  builder: (buildContext, snapshot) {
-                    Color selectedColor = snapshot.data ?? Colors.green;
-                    return Stack(
-                      children: <Widget>[
-                        RepaintBoundary(
-                          key: paintKey,
-                          child: GestureDetector(
-                            onLongPress: () {
+            body: Container(
+              color: Colors.white,
+              child: Stack(
+                children: <Widget>[
+                  isImage
+                      ? StreamBuilder(
+                      initialData: Colors.green[500],
+                      stream: _stateController.stream,
+                      builder: (buildContext, snapshot) {
+                        Color selectedColor = snapshot.data ?? Colors.green;
+                        return Stack(
+                          children: <Widget>[
+                            RepaintBoundary(
+                              key: paintKey,
+                              child: GestureDetector(
+                                onLongPress: () {
 
-                              RenderBox box = imageKey.currentContext.findRenderObject();
-                              Offset position = box.localToGlobal(Offset.zero);
-                              double offsetX = position.dx;
-                              double offsetY = position.dy;
+                                  imageAnimationController.forward();
 
-
-                              double offsetXCenter = offsetX + (imageSize/2);
-                              double offsetYCenter = offsetY + (imageSize/2);
-
-
-                              imageAnimationController.forward();
-
-                              final List<Color> colors = [];
-
-//                              print("OffsetX     : "+(offsetX).toString()+"\n OffsetY    : "+(offsetY-50).toString());
-                              for(int i=0;i<128;i++){
-                                setState(() {
-                                  leftPos = offsetX.toDouble();
-                                  topPos = (offsetY-60).toDouble();
-                                });
-                                if(i<42){
-                                  getPixel(position, Offset(offsetX+i*0.7, offsetY-(60)), box.size.width).then((value) {
-                                    colors.add(value);
-                                  });
-                                }else if(i>=42 && i<84){
-                                  getPixel(position, Offset(offsetX+i*0.7, offsetY-(52)), box.size.width).then((value) {
-                                    colors.add(value);
-                                  });
-                                }else{
-                                  getPixel(position, Offset(offsetX+i*0.7, offsetY-(68)), box.size.width).then((value) {
-                                    colors.add(value);
-                                  });
-                                }
-                              }
+                                  RenderBox box = imageKey.currentContext.findRenderObject();
+                                  Offset position = box.localToGlobal(Offset.zero);
+                                  double offsetX = position.dx;
+                                  double offsetY = position.dy;
 
 
-                              Future.delayed(Duration(milliseconds: 6000), () {
+                                  double offsetXCenter = offsetX + (imageSize/2);
+                                  double offsetYCenter = offsetY + (imageSize/2);
 
-                                for(int i=0;i<128;i++){
-                                  if(i<42){
-                                    particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.7)*0.1, offsetY: (offsetYCenter-(offsetY-60))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-60));
-                                  }else if(i>=43 && i<84){
-                                    particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.7)*0.1, offsetY: (offsetYCenter-(offsetY-52))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-52));
-                                  }else{
-                                    particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.7)*0.1, offsetY: (offsetYCenter-(offsetY-68))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-68));
+                                  final List<Color> colors = [];
+
+                                  for(int i=0;i<64;i++){
+                                    setState(() {
+                                      leftPos = offsetX.toDouble();
+                                      topPos = (offsetY-60).toDouble();
+                                    });
+                                    if(i<21){
+                                      getPixel(position, Offset(offsetX+i*0.7, offsetY-(60)), box.size.width).then((value) {
+                                        colors.add(value);
+                                      });
+                                    }else if(i>=21 && i<42){
+                                      getPixel(position, Offset(offsetX+i*0.7, offsetY-(52)), box.size.width).then((value) {
+                                        colors.add(value);
+                                      });
+                                    }else{
+                                      getPixel(position, Offset(offsetX+i*0.7, offsetY-(68)), box.size.width).then((value) {
+                                        colors.add(value);
+                                      });
+                                    }
                                   }
-                                }
 
-                                setState(() {
-                                  isImage = false;
-                                });
 
-                              });
+                                  Future.delayed(Duration(milliseconds: 3000), () {
 
-                            },
-                            child: Container(
-                              alignment: FractionalOffset(0.5, 0.5),
-                              child: Transform(
-                                transform: Matrix4.translation(_shake()),
-                                child: Image.asset(
-                                  imagePath,
-                                  key: imageKey,
-                                  width: imageSize,
-                                  height: imageSize,
+                                    for(int i=0;i<64;i++){
+                                      if(i<21){
+                                        particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.7)*0.1, offsetY: (offsetYCenter-(offsetY-60))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-60));
+                                      }else if(i>=21 && i<42){
+                                        particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.5)*0.1, offsetY: (offsetYCenter-(offsetY-52))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-52));
+                                      }else{
+                                        particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.9)*0.1, offsetY: (offsetYCenter-(offsetY-68))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-68));
+                                      }
+                                    }
+
+                                    setState(() {
+                                      isImage = false;
+                                    });
+
+                                  });
+
+                                },
+                                child: Container(
+                                  alignment: FractionalOffset(0.35, 0.75),
+                                  child: Transform(
+                                    transform: Matrix4.translation(_shake()),
+                                    child: Image.asset(
+                                      widget.imagePath,
+                                      key: imageKey,
+                                      width: imageSize,
+                                      height: imageSize,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
+                        );
+                      }):
+                  Container(
+                    child: Stack(
+                      children: <Widget>[
+                        for(Particle particle in particles) particle.buildWidget(),
+                        RaisedButton(
+                          child: Text("Go Back"),
+                          onPressed: () {
+                            setState(() {
+                              isImage = true;
+                            });
+                          },
                         ),
                       ],
-                    );
-                  }):
-              Container(
-                child: Stack(
-                  children: <Widget>[
-                    for(Particle particle in particles) particle.buildWidget(),
-                    RaisedButton(
-                      child: Text("Go Back"),
-                      onPressed: () {
-                        setState(() {
-                          isImage = true;
-                        });
-                      },
                     ),
-                  ],
-                ),
+                  ),
+                  Text("Hello")
+                ],
               )
-          )
-      ),
-    );
+
+            )
+        ),
+      );
   }
 
 
   Future<void> loadImageBundleBytes() async {
-    ByteData imageBytes = await rootBundle.load(imagePath);
+    ByteData imageBytes = await rootBundle.load(widget.imagePath);
     setImageBytes(imageBytes);
   }
 
@@ -261,22 +261,16 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
     double px = position.dx;
     double py = position.dy;
 
-//    print("OffsetX: "+(globalPosition.dx+1).toString()+"\n OffsetY: "+(globalPosition.dy+1).toString());
-
 
     if (!useSnapshot) {
       double widgetScale = size / photo.width;
-      print(py);
       px = (px / widgetScale);
       py = (py / widgetScale);
 
-//      print("Widget Scale:  " + widgetScale.toString());
     }
 
-//    print(photo.getPixelSafe(81, 352));
 
     int pixel32 = photo.getPixelSafe(px.toInt()+1, py.toInt());
-//    print("Pixel32: " + pixel32.toString());
 
     int hex = abgrToArgb(pixel32);
 
@@ -285,8 +279,6 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
     _stateController.add(Color(hex));
 
     Color returnColor = Color(hex);
-
-//    print("Hex color: " + Color(hex).toString());
 
     return returnColor;
   }
@@ -313,6 +305,7 @@ class Particle extends _MyHomePageState{
   Animation translateXdashAnimation, negatetranslateXdashAnimation;
   Animation translateYdashAnimation, negatetranslateYdashAnimation;
   Animation fadingAnimation;
+  Animation particleSize;
   double x,y;
   Color colors;
   double newOffsetX = 0.0, newOffsetY = 0.0;
@@ -321,7 +314,6 @@ class Particle extends _MyHomePageState{
   Particle({@required this.id, @required this.screenSize, this.colors, this.offsetX, this.offsetY, this.newOffsetX, this.newOffsetY}) {
 
     position = Offset(this.offsetX, this.offsetY);
-//    print("Position value: " + position.toString());
 
     Random random = new Random();
     this.x = random.nextDouble() * 100;
@@ -331,6 +323,18 @@ class Particle extends _MyHomePageState{
         vsync: this,
         duration: Duration(milliseconds: 1500)
     );
+
+    translateXAnimation = Tween(begin: position.dx, end: x).animate(animationController);
+    translateYAnimation = Tween(begin: position.dy, end: y).animate(animationController);
+    negatetranslateXAnimation = Tween(begin: -1 * position.dx, end: -1 * x).animate(animationController);
+    negatetranslateYAnimation = Tween(begin: -1 * position.dy, end: -1 * y).animate(animationController);
+    fadingAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(animationController);
+
+    particleSize = Tween(begin: 5.0, end: random.nextDouble() * 20).animate(animationController);
+
   }
 
   Offset getPosition(){
@@ -338,165 +342,81 @@ class Particle extends _MyHomePageState{
   }
 
   buildWidget() {
-//    translateXAnimation = Tween(begin: position.dx, end: x).animate(animationController);
-    translateYAnimation = Tween(begin: position.dy, end: y).animate(animationController);
-//    negatetranslateXAnimation = Tween(begin: -1 * position.dx, end: -1 * x).animate(animationController);
-//    negatetranslateYAnimation = Tween(begin: -1 * position.dy, end: -1 * y).animate(animationController);
-    fadingAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.0,
-    ).animate(animationController);
-
-    Animation scalingAnimation = Tween<double>(
-        begin: 1.0,
-        end: 1.5
-    ).animate(animationController);
-
-    Animation leftRight = Tween<double>(
-        begin: position.dx,
-        end: 170
-    ).animate(animationController);
-
-    Animation up = Tween<double>(
-        begin: 20,
-        end: 280
-    ).animate(animationController);
-
-    Animation down = Tween<double>(
-        begin: 20,
-        end: 255
-    ).animate(animationController);
 
 
-    double scalingFactor  = 0.4;
-
-    Future.delayed(Duration(milliseconds: 10), () {
-      animationController.forward();
-    });
+    animationController.forward();
 
     return new Container(
       alignment: FractionalOffset((newOffsetX/screenSize.width), (newOffsetY/screenSize.height)),
       child: AnimatedBuilder(
         animation: animationController,
         builder: (BuildContext context, Widget widget){
-          if(id % 6 == 0){
+          if(id % 4 == 0){
             return Transform.translate(
-                offset: Offset(getOffset((leftRight.value).round()).dx, getOffset((leftRight.value).round()).dy + translateYAnimation.value),
+                offset: Offset(translateXAnimation.value, translateYAnimation.value),
                 child: FadeTransition(
-                    opacity: fadingAnimation,
-                    child: Transform.scale(
-                      scale: scalingAnimation.value,
-                      child: Container(
+                  opacity: fadingAnimation,
+                  child: Container(
 //                      width: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
 //                      height: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-                        width: 5.0,
-                        height: 5.0,
-                        decoration: BoxDecoration(
-                            color: colors,
-                            shape: BoxShape.circle
-                        ),
-                      ),
-                    )
+                    width: particleSize.value>5 ? particleSize.value : 5,
+                    height: particleSize.value>5 ? particleSize.value : 5,
+                    decoration: BoxDecoration(
+                        color: colors,
+                        shape: BoxShape.circle
+                    ),
+                  ),
                 )
             );
-          }else if(id % 6 == 1){
+          }else if(id % 4 == 1){
             return Transform.translate(
-                offset: Offset(- getOffset((leftRight.value).round()).dx, getOffset((leftRight.value).round()).dy + translateYAnimation.value),
+                offset: Offset(negatetranslateXAnimation.value, translateYAnimation.value),
                 child: FadeTransition(
-                    opacity: fadingAnimation,
-                    child: Transform.scale(
-                      scale: scalingAnimation.value,
-                      child: Container(
+                  opacity: fadingAnimation,
+                  child: Container(
 //                      width: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
 //                      height: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-                        width: 5.0,
-                        height: 5.0,
-                        decoration: BoxDecoration(
-                            color: colors,
-                            shape: BoxShape.circle
-                        ),
-                      ),
-                    )
+                    width: particleSize.value>5 ? particleSize.value : 5,
+                    height: particleSize.value>5 ? particleSize.value : 5,
+                    decoration: BoxDecoration(
+                        color: colors,
+                        shape: BoxShape.circle
+                    ),
+                  ),
                 )
             );
-          }else if(id % 6 == 2){
+          }else if(id % 4 == 2){
             return Transform.translate(
-                offset: Offset( -getFifthOffset((down.value).round()).dx - translateYAnimation.value , getFifthOffset((down.value).round()).dy ),
+                offset: Offset(translateXAnimation.value, negatetranslateYAnimation.value),
                 child: FadeTransition(
-                    opacity: fadingAnimation,
-                    child: Transform.scale(
-                      scale: scalingAnimation.value,
-                      child: Container(
+                  opacity: fadingAnimation,
+                  child: Container(
 //                      width: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
 //                      height: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-                        width: 5.0,
-                        height: 5.0,
-                        decoration: BoxDecoration(
-                            color: colors,
-                            shape: BoxShape.circle
-                        ),
-                      ),
-                    )
-                )
-            );
-          }else if(id % 6 == 3){
-            return Transform.translate(
-                offset: Offset(-getThirdOffset((up.value).round()).dx - translateYAnimation.value , getThirdOffset((up.value).round()).dy ),
-                child: FadeTransition(
-                    opacity: fadingAnimation,
-                    child: Transform.scale(
-                      scale: scalingAnimation.value,
-                      child: Container(
-//                      width: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-//                      height: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-                        width: 5.0,
-                        height: 5.0,
-                        decoration: BoxDecoration(
-                            color: colors,
-                            shape: BoxShape.circle
-                        ),
-                      ),
-                    )
-                )
-            );
-          }else if(id % 6 == 4){
-            return Transform.translate(
-                offset: Offset( getFifthOffset((down.value).round()).dx + translateYAnimation.value , getFifthOffset((down.value).round()).dy ),
-                child: FadeTransition(
-                    opacity: fadingAnimation,
-                    child: Transform.scale(
-                      scale: scalingAnimation.value,
-                      child: Container(
-//                      width: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-//                      height: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-                        width: 5.0,
-                        height: 5.0,
-                        decoration: BoxDecoration(
-                            color: colors,
-                            shape: BoxShape.circle
-                        ),
-                      ),
-                    )
+                    width: particleSize.value>5 ? particleSize.value : 5,
+                    height: particleSize.value>5 ? particleSize.value : 5,
+                    decoration: BoxDecoration(
+                        color: colors,
+                        shape: BoxShape.circle
+                    ),
+                  ),
                 )
             );
           }else{
             return Transform.translate(
-                offset: Offset( getThirdOffset((up.value).round()).dx + translateYAnimation.value , getThirdOffset((up.value).round()).dy ),
+                offset: Offset(negatetranslateXAnimation.value, negatetranslateYAnimation.value),
                 child: FadeTransition(
-                    opacity: fadingAnimation,
-                    child: Transform.scale(
-                      scale: scalingAnimation.value,
-                      child: Container(
+                  opacity: fadingAnimation,
+                  child: Container(
 //                      width: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
 //                      height: translateXAnimation.value > 0 ? translateXAnimation.value*scalingFactor:4,
-                        width: 5.0,
-                        height: 5.0,
-                        decoration: BoxDecoration(
-                            color: colors,
-                            shape: BoxShape.circle
-                        ),
-                      ),
-                    )
+                    width: particleSize.value>5 ? particleSize.value : 5,
+                    height: particleSize.value>5 ? particleSize.value : 5,
+                    decoration: BoxDecoration(
+                        color: colors,
+                        shape: BoxShape.circle
+                    ),
+                  ),
                 )
             );
           }
@@ -505,61 +425,4 @@ class Particle extends _MyHomePageState{
     );
 
   }
-
-  // returns offsets of path for left/right curve
-  Offset getOffset(int x){
-    double height = 400;
-    double width = 200;
-
-    Path path = Path();
-    path.moveTo(offsetX, offsetY);
-    path.quadraticBezierTo(width / 2 + offsetX - 30 , - height / 20 + offsetY - 5,  width + offsetX - 130, height / 2 + offsetY - 180);
-
-    final metrics = path.computeMetrics().first;
-    final width1 = metrics.getTangentForOffset(metrics.length).position.dx;
-    final offset = metrics.getTangentForOffset((x / width1).clamp(0.0, 1.0) * metrics.length).position;
-
-    return offset;
-  }
-
-  // returns offsets of path for top curve
-  Offset getThirdOffset(int y){
-
-    double height = 400;
-    double width = 200;
-
-    Path path = Path();
-    path.moveTo(offsetX, offsetY);
-//    path.quadraticBezierTo(width / 2 + offsetX - 80 , - height / 20 + offsetY + 100,  width + offsetX - 220, height / 2 + offsetY - 120);
-//    path.quadraticBezierTo(width / 2 + offsetX - 30 , - height / 20 + offsetY + 100,  width + offsetX - 140, height / 2 + offsetY - 80);
-//    path.quadraticBezierTo(width / 2 + offsetX - 50 , - height / 20 + offsetY - 120,  width + offsetX - 100, - height / 2 + offsetY + 100);
-    path.quadraticBezierTo(width / 2 + offsetX - 80 , - height / 20 + offsetY - 50,  width + offsetX - 120, - height / 2 + offsetY + 200);
-
-    final metrics = path.computeMetrics().first;
-    final width1 = metrics.getTangentForOffset(metrics.length).position.dx;
-    final offset = metrics.getTangentForOffset((y / width1).clamp(0.0, 1.0) * metrics.length).position;
-
-    return offset;
-  }
-
-  // returns offsets of path for bottom curve
-  Offset getFifthOffset(int y){
-
-    double height = 400;
-    double width = 200;
-
-    Path path = Path();
-    path.moveTo(offsetX, offsetY);
-//    path.quadraticBezierTo(width / 2 + offsetX - 80 , - height / 20 + offsetY + 100,  width + offsetX - 220, height / 2 + offsetY - 120);
-//    path.quadraticBezierTo(width / 2 + offsetX - 30 , - height / 20 + offsetY + 100,  width + offsetX - 140, height / 2 + offsetY - 80);
-    path.quadraticBezierTo(width / 2 + offsetX - 30 , - height / 20 + offsetY + 40,  width + offsetX - 150, height / 2 + offsetY - 100);
-
-    final metrics = path.computeMetrics().first;
-    final width1 = metrics.getTangentForOffset(metrics.length).position.dx;
-    final offset = metrics.getTangentForOffset((y / width1).clamp(0.0, 1.0) * metrics.length).position;
-
-    return offset;
-
-  }
-
 }
