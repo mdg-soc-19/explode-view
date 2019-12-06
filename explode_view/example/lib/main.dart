@@ -118,106 +118,107 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
             body: Container(
               child: Stack(
                 children: <Widget>[
-                  isImage
-                      ? StreamBuilder(
-                      initialData: Colors.green[500],
-                      stream: _stateController.stream,
-                      builder: (buildContext, snapshot) {
-                        return Stack(
-                          children: <Widget>[
-                            RepaintBoundary(
-                              key: paintKey,
-                              child: GestureDetector(
-                                onLongPress: () {
+                  Container(
+                    child: isImage
+                        ? StreamBuilder(
+                        initialData: Colors.green[500],
+                        stream: _stateController.stream,
+                        builder: (buildContext, snapshot) {
+                          return Stack(
+                            children: <Widget>[
+                              RepaintBoundary(
+                                key: paintKey,
+                                child: GestureDetector(
+                                  onLongPress: () {
 
-                                  imageAnimationController.forward();
+                                    imageAnimationController.forward();
 
-                                  RenderBox box = imageKey.currentContext.findRenderObject();
-                                  Offset position = box.localToGlobal(Offset.zero);
-                                  double offsetX = position.dx;
-                                  double offsetY = position.dy;
-
-
-                                  double offsetXCenter = offsetX + (imageSize/2);
-                                  double offsetYCenter = offsetY + (imageSize/2);
-
-                                  final List<Color> colors = [];
-
-                                  for(int i=0;i<64;i++){
-                                    setState(() {
-                                      leftPos = offsetX.toDouble();
-                                      topPos = (offsetY-60).toDouble();
-                                    });
-                                    if(i<21){
-                                      getPixel(position, Offset(offsetX+i*0.7, offsetY-(60)), box.size.width).then((value) {
-                                        colors.add(value);
-                                      });
-                                    }else if(i>=21 && i<42){
-                                      getPixel(position, Offset(offsetX+i*0.7, offsetY-(52)), box.size.width).then((value) {
-                                        colors.add(value);
-                                      });
-                                    }else{
-                                      getPixel(position, Offset(offsetX+i*0.7, offsetY-(68)), box.size.width).then((value) {
-                                        colors.add(value);
-                                      });
-                                    }
-                                  }
+                                    RenderBox box = imageKey.currentContext.findRenderObject();
+                                    Offset position = box.localToGlobal(Offset.zero);
+                                    double offsetX = position.dx;
+                                    double offsetY = position.dy;
 
 
-                                  Future.delayed(Duration(milliseconds: 3500), () {
+                                    double offsetXCenter = offsetX + (imageSize/2);
+                                    double offsetYCenter = offsetY + (imageSize/2);
+
+                                    final List<Color> colors = [];
 
                                     for(int i=0;i<64;i++){
+                                      setState(() {
+                                        leftPos = offsetX.toDouble();
+                                        topPos = (offsetY-60).toDouble();
+                                      });
                                       if(i<21){
-                                        particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.7)*0.1, offsetY: (offsetYCenter-(offsetY-60))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-60));
+                                        getPixel(position, Offset(offsetX+i*0.7, offsetY-(60)), box.size.width).then((value) {
+                                          colors.add(value);
+                                        });
                                       }else if(i>=21 && i<42){
-                                        particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.5)*0.1, offsetY: (offsetYCenter-(offsetY-52))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-52));
+                                        getPixel(position, Offset(offsetX+i*0.7, offsetY-(52)), box.size.width).then((value) {
+                                          colors.add(value);
+                                        });
                                       }else{
-                                        particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.9)*0.1, offsetY: (offsetYCenter-(offsetY-68))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-68));
+                                        getPixel(position, Offset(offsetX+i*0.7, offsetY-(68)), box.size.width).then((value) {
+                                          colors.add(value);
+                                        });
                                       }
                                     }
 
-                                    setState(() {
-                                      isImage = false;
+
+                                    Future.delayed(Duration(milliseconds: 3500), () {
+
+                                      for(int i=0;i<64;i++){
+                                        if(i<21){
+                                          particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.7)*0.1, offsetY: (offsetYCenter-(offsetY-60))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-60));
+                                        }else if(i>=21 && i<42){
+                                          particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.5)*0.1, offsetY: (offsetYCenter-(offsetY-52))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-52));
+                                        }else{
+                                          particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (offsetXCenter-offsetX+i*0.9)*0.1, offsetY: (offsetYCenter-(offsetY-68))*0.1, newOffsetX: offsetX+i*0.7, newOffsetY: offsetY-68));
+                                        }
+                                      }
+
+                                      setState(() {
+                                        isImage = false;
+                                      });
+
                                     });
 
-                                  });
-
-                                },
-                                child: Container(
-                                  alignment: FractionalOffset(0.35, 0.75),
-                                  child: Transform(
-                                    transform: Matrix4.translation(_shake()),
-                                    child: Image.asset(
-                                      widget.imagePath,
-                                      key: imageKey,
-                                      width: imageSize,
-                                      height: imageSize,
+                                  },
+                                  child: Container(
+                                    alignment: FractionalOffset(0.35, 0.75),
+                                    child: Transform(
+                                      transform: Matrix4.translation(_shake()),
+                                      child: Image.asset(
+                                        widget.imagePath,
+                                        key: imageKey,
+                                        width: imageSize,
+                                        height: imageSize,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      }):
-                  Container(
-                    child: Stack(
-                      children: <Widget>[
-                        for(Particle particle in particles) particle.buildWidget(),
-                        RaisedButton(
-                          child: Text("Go Back"),
-                          onPressed: () {
-                            setState(() {
-                              isImage = true;
-                            });
-                          },
-                        ),
-                      ],
+                            ],
+                          );
+                        }):
+                    Container(
+                      child: Stack(
+                        children: <Widget>[
+                          for(Particle particle in particles) particle.buildWidget(),
+                          RaisedButton(
+                            child: Text("Go Back"),
+                            onPressed: () {
+                              setState(() {
+                                isImage = true;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               )
-
             )
         ),
       );

@@ -53,12 +53,14 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
   GlobalKey paintKey = GlobalKey();
 
   bool useSnapshot = true;
+  bool isImage = true;
   Random random;
 
   AnimationController imageAnimationController;
 
   double imageSize = 50.0;
 
+  final StreamController<Color> _stateController = StreamController<Color>.broadcast();
   img.Image photo;
 
   @override
@@ -141,11 +143,25 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Stack(
-        children: <Widget>[
-          
-        ],
-      ),
+      child: isImage
+          ? StreamBuilder(
+        initialData: Colors.green[500],
+        stream: _stateController.stream,
+        builder: (buildContext, snapshot) {
+          return Stack(
+            children: <Widget>[
+
+            ],
+          );
+        },
+      ):
+          Container(
+            child: Stack(
+              children: <Widget>[
+                
+              ],
+            ),
+          )
     );
   }
 
