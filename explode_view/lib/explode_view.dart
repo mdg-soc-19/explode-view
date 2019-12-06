@@ -84,3 +84,63 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
   }
 
 }
+
+class Particle extends _ExplodeViewState {
+
+  int id;
+  Size screenSize;
+  Offset position;
+  Paint singleParticle;
+
+  double offsetX=0.0, offsetY=0.0;
+  double newOffsetX = 0.0, newOffsetY = 0.0;
+
+  static final randomValue = Random();
+  AnimationController animationController;
+
+  Animation translateXAnimation, negatetranslateXAnimation;
+  Animation translateYAnimation, negatetranslateYAnimation;
+  Animation fadingAnimation;
+  Animation particleSize;
+
+  double lastXOffset, lastYOffset;
+  Color colors;
+
+
+  Particle({@required this.id, @required this.screenSize, this.colors, this.offsetX, this.offsetY, this.newOffsetX, this.newOffsetY}) {
+
+    position = Offset(this.offsetX, this.offsetY);
+
+    Random random = new Random();
+    this.lastXOffset = random.nextDouble() * 100;
+    this.lastYOffset = random.nextDouble() * 100;
+
+    animationController = new AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 1500)
+    );
+
+    translateXAnimation = Tween(begin: position.dx, end: lastXOffset).animate(animationController);
+    translateYAnimation = Tween(begin: position.dy, end: lastYOffset).animate(animationController);
+    negatetranslateXAnimation = Tween(begin: -1 * position.dx, end: -1 * lastXOffset).animate(animationController);
+    negatetranslateYAnimation = Tween(begin: -1 * position.dy, end: -1 * lastYOffset).animate(animationController);
+    fadingAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(animationController);
+
+    particleSize = Tween(begin: 5.0, end: random.nextDouble() * 20).animate(animationController);
+
+  }
+
+  buildParticle() {
+    animationController.forward();
+
+    return Container(
+      alignment: FractionalOffset((newOffsetX / screenSize.width), (newOffsetY / screenSize.height)),
+      child: AnimatedBuilder(
+        animation: animationController,
+      ),
+    );
+  }
+}

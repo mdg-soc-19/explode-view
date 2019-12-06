@@ -116,7 +116,6 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
               ),
             ),
             body: Container(
-              color: Colors.white,
               child: Stack(
                 children: <Widget>[
                   isImage
@@ -166,7 +165,7 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
                                   }
 
 
-                                  Future.delayed(Duration(milliseconds: 3000), () {
+                                  Future.delayed(Duration(milliseconds: 3500), () {
 
                                     for(int i=0;i<64;i++){
                                       if(i<21){
@@ -217,7 +216,6 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
                       ],
                     ),
                   ),
-                  Text("Hello")
                 ],
               )
 
@@ -296,14 +294,11 @@ class Particle extends _MyHomePageState{
   int id;
   Size screenSize;
   Offset position;
-  Paint singleParticle;
   double offsetX=0.0, offsetY=0.0;
   static final randomValue = Random();
-  AnimationController animationController, curveAnimationController;
+  AnimationController animationController;
   Animation translateXAnimation, negatetranslateXAnimation;
   Animation translateYAnimation, negatetranslateYAnimation;
-  Animation translateXdashAnimation, negatetranslateXdashAnimation;
-  Animation translateYdashAnimation, negatetranslateYdashAnimation;
   Animation fadingAnimation;
   Animation particleSize;
   double x,y;
@@ -335,10 +330,6 @@ class Particle extends _MyHomePageState{
 
     particleSize = Tween(begin: 5.0, end: random.nextDouble() * 20).animate(animationController);
 
-  }
-
-  Offset getPosition(){
-    return this.position;
   }
 
   buildWidget() {
