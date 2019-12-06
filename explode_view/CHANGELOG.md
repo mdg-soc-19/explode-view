@@ -1,3 +1,3 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.1] - 2019-12-06.
 
-* TODO: Describe initial release.
+* This flutter package helps exploding the image when it is to be removed/deleted.

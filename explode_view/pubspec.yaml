@@ -1,8 +1,8 @@
 name: explode_view
-description: A new Flutter package.
+description: To be able to explode the image.
 version: 0.0.1
 author: Hemil Panchiwala<hemilmodi54321@gmail.com>
-homepage:
+homepage: https://github.com/mdg-soc-19/explode-view
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
