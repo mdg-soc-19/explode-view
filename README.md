@@ -26,6 +26,7 @@ This project contains the features of Flutter Animation that are required to com
 * [How To Use](#how-to-use)
 * [Algorithm](#algorithm)
 * [Documentation](#documentation)
+* [Bugs/Requests](#bugsrequests)
 * [License](#license)
 
 
