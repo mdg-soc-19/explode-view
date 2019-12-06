@@ -61,6 +61,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
   AnimationController imageAnimationController;
 
   double imageSize = 50.0;
+  double distFromLeft=10.0, distFromTop=10.0;
 
   final StreamController<Color> _stateController = StreamController<Color>.broadcast();
   img.Image photo;
@@ -154,6 +155,54 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
             children: <Widget>[
               RepaintBoundary(
                 key: paintKey,
+                child: GestureDetector(
+                  onLongPress: () {
+                    imageAnimationController.forward();
+
+                    RenderBox box = imageKey.currentContext.findRenderObject();
+                    Offset imagePosition = box.localToGlobal(Offset.zero);
+                    double imagePositionOffsetX = imagePosition.dx;
+                    double imagePositionOffsetY = imagePosition.dy;
+
+                    double imageCenterPositionX = imagePositionOffsetX + (imageSize / 2);
+                    double imageCenterPositionY = imagePositionOffsetY + (imageSize / 2);
+
+                    final List<Color> colors = [];
+
+                    for(int i=0;i<64;i++){
+                      setState(() {
+                        distFromLeft = imagePositionOffsetX.toDouble();
+                        distFromTop = (imagePositionOffsetY-60).toDouble();
+                      });
+                      if(i<21){
+                        getPixel(imagePosition, Offset(imagePositionOffsetX+i*0.7, imagePositionOffsetY-(60)), box.size.width).then((value) {
+                          colors.add(value);
+                        });
+                      }else if(i>=21 && i<42){
+                        getPixel(imagePosition, Offset(imagePositionOffsetX+i*0.7, imagePositionOffsetY-(52)), box.size.width).then((value) {
+                          colors.add(value);
+                        });
+                      }else{
+                        getPixel(imagePosition, Offset(imagePositionOffsetX+i*0.7, imagePositionOffsetY-(68)), box.size.width).then((value) {
+                          colors.add(value);
+                        });
+                      }
+                    }
+
+                  },
+                  child: Container(
+                    alignment: FractionalOffset(0.35, 0.75),
+                    child: Transform(
+                      transform: Matrix4.translation(_shakeImage()),
+                      child: Image.asset(
+                        widget.imagePath,
+                        key: imageKey,
+                        width: imageSize,
+                        height: imageSize,
+                      ),
+                    ),
+                  ),
+                ),
               )
             ],
           );
