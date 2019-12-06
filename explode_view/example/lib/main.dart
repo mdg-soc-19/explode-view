@@ -123,7 +123,6 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
                       initialData: Colors.green[500],
                       stream: _stateController.stream,
                       builder: (buildContext, snapshot) {
-                        Color selectedColor = snapshot.data ?? Colors.green;
                         return Stack(
                           children: <Widget>[
                             RepaintBoundary(
@@ -241,7 +240,6 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
 
   void setImageBytes(ByteData imageBytes) {
     List<int> values = imageBytes.buffer.asUint8List();
-    photo = null;
     photo = img.decodeImage(values);
   }
 
@@ -279,14 +277,15 @@ class _MyHomePageState extends State<DemoBody> with TickerProviderStateMixin{
     return returnColor;
   }
 
+  int abgrToArgb(int argbColor) {
+    int r = (argbColor >> 16) & 0xFF;
+    int b = argbColor & 0xFF;
+    return (argbColor & 0xFF00FF00) | (b << 16) | r;
+  }
 
 }
 
-int abgrToArgb(int argbColor) {
-  int r = (argbColor >> 16) & 0xFF;
-  int b = argbColor & 0xFF;
-  return (argbColor & 0xFF00FF00) | (b << 16) | r;
-}
+
 
 class Particle extends _MyHomePageState{
   int id;

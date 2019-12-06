@@ -1,8 +1,14 @@
 library explode_view;
 
 import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+import 'package:image/image.dart' as img;
+import 'package:flutter/services.dart' show rootBundle;
 import 'dart:math';
 
 // The duration for the scattering the particles and fade out
@@ -52,6 +58,8 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
   double imageSize = 50.0;
 
+  img.Image photo;
+
   @override
   void initState() {
     super.initState();
@@ -64,6 +72,65 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
       duration: Duration(milliseconds: 3000),
     );
 
+  }
+
+  Future<void> loadImageBundleBytes() async {
+    ByteData imageBytes = await rootBundle.load(widget.imagePath);
+    setImageBytes(imageBytes);
+  }
+
+  Future<void> loadSnapshotBytes() async {
+    RenderRepaintBoundary boxPaint = paintKey.currentContext.findRenderObject();
+    ui.Image capture = await boxPaint.toImage();
+    ByteData imageBytes =
+    await capture.toByteData(format: ui.ImageByteFormat.png);
+    setImageBytes(imageBytes);
+    capture.dispose();
+  }
+
+  void setImageBytes(ByteData imageBytes) {
+    List<int> values = imageBytes.buffer.asUint8List();
+    photo = img.decodeImage(values);
+  }
+
+  Future<Color> getPixel(Offset globalPosition, Offset position, double size) async {
+    if (photo == null) {
+      await (useSnapshot ? loadSnapshotBytes() : loadImageBundleBytes());
+    }
+
+    Color newColor = calculatePixel(globalPosition, position, size);
+    return newColor;
+  }
+
+  Color calculatePixel(Offset globalPosition, Offset position, double size) {
+
+    double px = position.dx;
+    double py = position.dy;
+
+
+    if (!useSnapshot) {
+      double widgetScale = size / photo.width;
+      px = (px / widgetScale);
+      py = (py / widgetScale);
+
+    }
+
+
+    int pixel32 = photo.getPixelSafe(px.toInt()+1, py.toInt());
+
+    int hex = abgrToArgb(pixel32);
+
+//    _stateController.add(Color(hex));
+
+    Color returnColor = Color(hex);
+
+    return returnColor;
+  }
+
+  int abgrToArgb(int argbColor) {
+    int r = (argbColor >> 16) & 0xFF;
+    int b = argbColor & 0xFF;
+    return (argbColor & 0xFF00FF00) | (b << 16) | r;
   }
 
   @override
