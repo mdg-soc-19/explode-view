@@ -18,14 +18,21 @@ const explosionDuration = Duration(milliseconds: 1500);
 // The duration for shaking the image while creating the particles
 const shakingDuration = Duration(milliseconds: 3000);
 
+// Total number of particles to be generated
 const noOfParticles = 64;
 
 class ExplodeView extends StatelessWidget {
 
+  /// The path where the image is located
   final String imagePath;
+
+  /// The coordinates of the image from the left edge of the screen
   final double imagePosFromLeft;
+
+  /// The coordinates of the image from the top edge of the screen
   final double imagePosFromTop;
 
+  /// The constructor for the ExplodeView class
   const ExplodeView({
     @required this.imagePath,
     @required this.imagePosFromLeft,
@@ -35,18 +42,21 @@ class ExplodeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final size = MediaQuery.of(context).size;
+    // This variable contains the size of the screen
+    final screenSize = MediaQuery.of(context).size;
+
     return new Container(
-      child: new ExplodeViewBody(screenSize: size, imagePath: imagePath, imagePosFromLeft: imagePosFromLeft, imagePosFromTop: imagePosFromTop),
+      child: new ExplodeViewBody(screenSize: screenSize, imagePath: imagePath, imagePosFromLeft: imagePosFromLeft, imagePosFromTop: imagePosFromTop),
     );
   }
 }
 
 class ExplodeViewBody extends StatefulWidget {
+
   final Size screenSize;
   final String imagePath;
-  double imagePosFromLeft = 200;
-  double imagePosFromTop = 400;
+  double imagePosFromLeft;
+  double imagePosFromTop;
 
   ExplodeViewBody({Key key, @required this.screenSize, @required this.imagePath, @required this.imagePosFromLeft, @required this.imagePosFromTop}) : super(key: key);
 
@@ -56,6 +66,7 @@ class ExplodeViewBody extends StatefulWidget {
 
 class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateMixin{
 
+  /// Keys that are unique across the entire app.
   GlobalKey currentKey;
   GlobalKey imageKey = GlobalKey();
   GlobalKey paintKey = GlobalKey();
@@ -64,13 +75,18 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
   bool isImage = true;
   math.Random random;
 
+  /// [ListView] that contains the list of different particles
   final List<Particle> particles = [];
 
+  /// AnimationController used for the shaking of the image
   AnimationController imageAnimationController;
 
+  /// imageSize is used as height and width of the image
+  ///
+  /// default to value 50.0
   double imageSize = 50.0;
-  double distFromLeft=10.0, distFromTop=10.0;
 
+  /// Controller that allows sending events on stream on change of the colors of the pixels
   final StreamController<Color> _stateController = StreamController<Color>.broadcast();
   img.Image photo;
 
@@ -88,15 +104,18 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
   }
 
+  // Returns the Vector3 object required for shaking the image
   Vector3 _shakeImage() {
     return Vector3(math.sin((imageAnimationController.value) * math.pi * 20.0) * 8, 0.0, 0.0);
   }
 
+  // Loads the bytes of the image and sets it in the img.Image object
   Future<void> loadImageBundleBytes() async {
     ByteData imageBytes = await rootBundle.load(widget.imagePath);
     setImageBytes(imageBytes);
   }
 
+  // Loads the bytes of the snapshot if the img.Image object is null
   Future<void> loadSnapshotBytes() async {
     RenderRepaintBoundary boxPaint = paintKey.currentContext.findRenderObject();
     ui.Image capture = await boxPaint.toImage();
@@ -106,6 +125,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
     capture.dispose();
   }
 
+  // Setting image bytes to the img.Image object
   void setImageBytes(ByteData imageBytes) {
     List<int> values = imageBytes.buffer.asUint8List();
     photo = img.decodeImage(values);
@@ -120,6 +140,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
     return newColor;
   }
 
+  // This method returns the color at the particular pixel of the image
   Color calculatePixel(Offset globalPosition, Offset position, double size) {
 
     double px = position.dx;
@@ -133,11 +154,11 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
     }
 
-
-    int pixel32 = photo.getPixelSafe(px.toInt()+1, py.toInt());
+    int pixel32 = photo.getPixelSafe(px.toInt()+1, py.toInt()); // getting the pixel value at particular position
 
     int hex = abgrToArgb(pixel32);
 
+    // Adds color to the StreamController which will be send to the stream as another event
     _stateController.add(Color(hex));
 
     Color returnColor = Color(hex);
@@ -145,6 +166,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
     return returnColor;
   }
 
+  // As image.dart library uses KML format i.e. #AABBGGRR, this method converts it to normal #AARRGGBB format
   int abgrToArgb(int argbColor) {
     int r = (argbColor >> 16) & 0xFF;
     int b = argbColor & 0xFF;
@@ -167,7 +189,10 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
                   onLongPress: () {
                     imageAnimationController.forward();
 
+                    // A render object of the image
                     RenderBox box = imageKey.currentContext.findRenderObject();
+
+                    // Getting the imagePosition from the RenderBox object
                     Offset imagePosition = box.localToGlobal(Offset.zero);
                     double imagePositionOffsetX = imagePosition.dx;
                     double imagePositionOffsetY = imagePosition.dy;
@@ -177,11 +202,8 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
                     final List<Color> colors = [];
 
+                    // Getting colors from the pixels and adding it to the List i.e. colors
                     for(int i = 0; i < noOfParticles; i++){
-                      setState(() {
-                        distFromLeft = imagePositionOffsetX.toDouble();
-                        distFromTop = (imagePositionOffsetY - 60).toDouble();
-                      });
                       if(i < 21){
                         getPixel(imagePosition, Offset(imagePositionOffsetX + (i * 0.7), imagePositionOffsetY - 60), box.size.width).then((value) {
                           colors.add(value);
@@ -199,6 +221,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
                     Future.delayed(Duration(milliseconds: 3500), () {
 
+                      // Adding the particles to the List of Particle class i.e. particles
                       for(int i = 0; i < noOfParticles; i++){
                         if(i < 21){
                           particles.add(Particle(id: i, screenSize: widget.screenSize, colors: colors[i].withOpacity(1.0), offsetX: (imageCenterPositionX - imagePositionOffsetX + (i * 0.7)) * 0.1, offsetY: (imageCenterPositionY - (imagePositionOffsetY - 60)) * 0.1, newOffsetX: imagePositionOffsetX + (i * 0.7), newOffsetY: imagePositionOffsetY - 60));
@@ -210,6 +233,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
                       }
 
                       setState(() {
+                        // Setting isImage false to disappear the image
                         isImage = false;
                       });
                     });
@@ -263,9 +287,14 @@ class Particle extends _ExplodeViewState {
   static final randomValue = math.Random();
   AnimationController animationController;
 
+  // Tween objects for setting Offset of the particle while translation
   Animation translateXAnimation, negatetranslateXAnimation;
   Animation translateYAnimation, negatetranslateYAnimation;
+
+  // Tween objects for setting opacity of the particle while translation
   Animation fadingAnimation;
+
+  // Tween objects for setting size of the particle while translation
   Animation particleSize;
 
   double lastXOffset, lastYOffset;
@@ -285,6 +314,7 @@ class Particle extends _ExplodeViewState {
         duration: Duration(milliseconds: 1500)
     );
 
+    // Defining the Tween objects
     translateXAnimation = Tween(begin: position.dx, end: lastXOffset).animate(animationController);
     translateYAnimation = Tween(begin: position.dy, end: lastYOffset).animate(animationController);
     negatetranslateXAnimation = Tween(begin: -1 * position.dx, end: -1 * lastXOffset).animate(animationController);
@@ -298,6 +328,7 @@ class Particle extends _ExplodeViewState {
 
   }
 
+  // This method starts the animation of the particle
   startParticleAnimation() {
     animationController.forward();
 
