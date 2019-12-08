@@ -47,7 +47,6 @@ dependencies:
 
 ### 2. Install it
 
-
 You can install packages from the command line:
 
 with `pub`:
@@ -61,6 +60,8 @@ with `Flutter`:
 ```css
 $ flutter packages get
 ```
+
+Alternatively, your editor might support  `flutter pub get`. Check the docs for your editor to learn more.
 
 ### 3. Import it
 
