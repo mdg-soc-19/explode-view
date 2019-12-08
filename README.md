@@ -1,5 +1,6 @@
 
 
+
 # <div align="center">Explode View</div>
 
 <p align="center"> <img src="https://github.com/mdg-soc-19/explode-view/blob/master/gif/explode-view.gif?raw=true" height = "500px"/></p>
@@ -22,12 +23,44 @@ A new open-source Flutter project that enables the developers to quickly enhance
 This project contains the features of Flutter Animation that are required to complete an amazing Flutter application.
 
 # Index
-
+* [Installing](#installing)
 * [How To Use](#how-to-use)
 * [Algorithm](#algorithm)
 * [Documentation](#documentation)
 * [Bugs/Requests](#bugsrequests)
 * [License](#license)
+
+
+# Installing
+
+### 1. Depend on it
+Add this to your package's `pubspec.yaml` file:
+
+```yaml
+dependencies: 
+  explode_view: ^0.0.1
+```
+
+### 2. Install it
+
+
+You can install packages from the command line:
+
+with Flutter:
+
+```shell
+$ flutter pub get
+```
+
+Alternatively, your editor might support  `flutter pub get`. Check the docs for your editor to learn more.
+
+### 3. Import it
+
+Now in your `Dart` code, you can use: 
+
+```dart
+import  'package:explode_view/explode_view.dart';
+```
 
 
 # How To Use
@@ -69,3 +102,4 @@ Pull request are also welcome.
 
 # License
 ExplodeView is licensed under MIT License. View [license](https://github.com/mdg-soc-19/explode-view/blob/master/explode_view/LICENSE).
+
