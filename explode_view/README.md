@@ -42,7 +42,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies: 
-  explode_view: ^1.0.1
+  explode_view: ^1.0.2
 ```
 
 ### 2. Install it
