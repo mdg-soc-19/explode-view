@@ -99,7 +99,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
 
     imageAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 3000),
+      duration: Duration(milliseconds: 4000),
     );
 
   }
@@ -186,7 +186,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
               RepaintBoundary(
                 key: paintKey,
                 child: GestureDetector(
-                  onLongPress: () {
+                  onLongPress: () async{
                     imageAnimationController.forward();
 
                     // A render object of the image
@@ -219,7 +219,7 @@ class _ExplodeViewState extends State<ExplodeViewBody> with TickerProviderStateM
                       }
                     }
 
-                    Future.delayed(Duration(milliseconds: 3500), () {
+                    Future.delayed(Duration(milliseconds: 4000), () {
 
                       // Adding the particles to the List of Particle class i.e. particles
                       for(int i = 0; i < noOfParticles; i++){
