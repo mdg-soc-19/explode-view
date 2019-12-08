@@ -1,11 +1,11 @@
 name: explode_view
-description: To be able to explode the image.
-version: 0.0.2
+description: A beautiful animation library for Flutter which explodes the image into small particles. This package can be used whenever there is a need of removing the image from the screen.
+version: 1.0.1
 author: Hemil Panchiwala<hemilmodi54321@gmail.com>
 homepage: https://github.com/mdg-soc-19/explode-view
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.3 <3.0.0"
 
 dependencies:
   flutter:

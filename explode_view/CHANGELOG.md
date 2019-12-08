@@ -1,3 +1,3 @@
-## [0.0.2] - 2019-12-08.
+## [1.0.1] - 2019-12-08.
 
-* Updated the README.md
+* Updated the README file

@@ -14,6 +14,10 @@
     <img src="https://img.shields.io/badge/License-MIT-red.svg"
       alt="License: MIT" />
   </a>
+  <a href="https://pub.dev/packages/explode_view">
+      <img src="https://img.shields.io/pub/v/explode_view.svg"
+        alt="Pub Package" />
+   </a>
   </div>
 
 <p align="center">A beautiful explosion animation for Flutter</p>
@@ -38,7 +42,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml 
 dependencies: 
-  explode_view: ^0.0.1
+  explode_view: ^1.0.0
 ```
 
 ### 2. Install it
