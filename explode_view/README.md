@@ -15,9 +15,9 @@
       alt="License: MIT" />
   </a>
   <a href="https://pub.dev/packages/explode_view">
-      <img src="https://img.shields.io/pub/v/explode_view.svg"
-        alt="Pub Package" />
-   </a>
+    <img src="https://img.shields.io/pub/v/explode_view.svg"
+      alt="Pub Package" />
+  </a>
   </div>
 
 <p align="center">A beautiful explosion animation for Flutter</p>
@@ -40,9 +40,9 @@ This project contains the features of Flutter Animation that are required to com
 ### 1. Depend on it
 Add this to your package's `pubspec.yaml` file:
 
-```yaml 
+```yaml
 dependencies: 
-  explode_view: ^1.0.0
+  explode_view: ^1.0.1
 ```
 
 ### 2. Install it
@@ -62,7 +62,7 @@ Alternatively, your editor might support  `flutter pub get`. Check the docs for 
 
 Now in your `Dart` code, you can use: 
 
-```dart 
+```dart
 import  'package:explode_view/explode_view.dart';
 ```
 
@@ -72,7 +72,7 @@ import  'package:explode_view/explode_view.dart';
 For the explosion animation in the app, user has to simply add the `ExplodeView` as a child in any Widget like Stack and many more.
 
 Example Code: 
-```dart 
+```dart
 ExplodeView(
       imagePath: 'assets/images/abc.png',	// path where the image is stored
       imagePosFromLeft: 120.0,	// set x-coordinate for image
@@ -106,3 +106,4 @@ Pull request are also welcome.
 
 # License
 ExplodeView is licensed under MIT License. View [license](https://github.com/mdg-soc-19/explode-view/blob/master/explode_view/LICENSE).
+
