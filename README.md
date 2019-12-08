@@ -27,7 +27,7 @@ A new open-source Flutter project that enables the developers to quickly enhance
 
 This project contains the features of Flutter Animation that are required to complete an amazing Flutter application.
 
-Explore how ExplodeView is made through this [blog](https://medium.com/mobile-development-group/flutter-explosion-animation-for-image-3dd5e2863427)
+Explore how ExplodeView is made through this [blog](https://medium.com/mobile-development-group/flutter-explosion-animation-for-image-3dd5e2863427).
 
 # Index
 * [Installing](#installing)
