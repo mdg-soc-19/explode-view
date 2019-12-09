@@ -39,7 +39,7 @@ Explore how ExplodeView is made through this [blog](https://medium.com/mobile-de
 Add this to your package's `pubspec.yaml` file:  
   
 ```yaml dependencies:   
-  explode_view: ^1.0.3  
+  explode_view: ^1.0.4
 ```  
   
 ### 2. Install it  
