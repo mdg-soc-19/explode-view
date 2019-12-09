@@ -29,7 +29,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,14 +42,20 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Container(
             child: Stack(
-              children: <Widget>[
-                ExplodeView(imagePath: 'assets/images/swiggy.png', imagePosFromLeft: 50.0, imagePosFromTop: 200.0),
-                ExplodeView(imagePath: 'assets/images/chrome.png', imagePosFromLeft: 200.0, imagePosFromTop: 400.0),
-                ExplodeView(imagePath: 'assets/images/firefox.png', imagePosFromLeft: 350.0, imagePosFromTop: 600.0)
-              ],
-            )
-        )
-    );
+          children: <Widget>[
+            ExplodeView(
+                imagePath: 'assets/images/swiggy.png',
+                imagePosFromLeft: 50.0,
+                imagePosFromTop: 200.0),
+            ExplodeView(
+                imagePath: 'assets/images/chrome.png',
+                imagePosFromLeft: 200.0,
+                imagePosFromTop: 400.0),
+            ExplodeView(
+                imagePath: 'assets/images/firefox.png',
+                imagePosFromLeft: 350.0,
+                imagePosFromTop: 600.0)
+          ],
+        )));
   }
-
 }
