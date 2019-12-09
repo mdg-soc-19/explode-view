@@ -43,9 +43,9 @@ Explore how ExplodeView is made through this [blog](https://medium.com/mobile-de
 ### 1. Depend on it
 Add this to your package's `pubspec.yaml` file:
 
-```yaml
+```yaml 
 dependencies: 
-  explode_view: ^1.0.2
+  explode_view: ^1.0.3
 ```
 
 ### 2. Install it
@@ -70,7 +70,7 @@ Alternatively, your editor might support  `flutter pub get`. Check the docs for 
 
 Now in your `Dart` code, you can use: 
 
-```dart
+```dart 
 import  'package:explode_view/explode_view.dart';
 ```
 
@@ -80,7 +80,7 @@ import  'package:explode_view/explode_view.dart';
 For the explosion animation in the app, user has to simply add the `ExplodeView` as a child in any Widget like Stack and many more.
 
 Example Code: 
-```dart
+```dart 
 ExplodeView(
       imagePath: 'assets/images/abc.png',	// path where the image is stored
       imagePosFromLeft: 120.0,	// set x-coordinate for image

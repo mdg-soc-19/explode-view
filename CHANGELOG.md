@@ -1,3 +1,3 @@
-## [1.0.2] - 2019-12-08.
+## [1.0.3] - 2019-12-09.
 
-* Updated the code
+* Fixed health issues in pub.dev

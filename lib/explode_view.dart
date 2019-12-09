@@ -55,8 +55,8 @@ class ExplodeViewBody extends StatefulWidget {
 
   final Size screenSize;
   final String imagePath;
-  double imagePosFromLeft;
-  double imagePosFromTop;
+  final double imagePosFromLeft;
+  final double imagePosFromTop;
 
   ExplodeViewBody({Key key, @required this.screenSize, @required this.imagePath, @required this.imagePosFromLeft, @required this.imagePosFromTop}) : super(key: key);
 
