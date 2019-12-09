@@ -1,10 +1,4 @@
-
-
-
-
-# <div align="center">Explode View</div>
-
-<p align="center"> <img src="https://github.com/mdg-soc-19/explode-view/blob/master/gif/explode-view.gif?raw=true" height = "500px"/></p>
+<p align="center"> <img src="https://github.com/mdg-soc-19/explode-view/blob/master/gif/cover.png?raw=true" height = "500px"/></p>
 
 <div align="center">
 <a href="https://flutter.io">
@@ -20,14 +14,12 @@
       alt="Pub Package" />
   </a>
   </div>
-
-<p align="center">A beautiful explosion animation for Flutter</p>
-
+<br/>
 A new open-source Flutter project that enables the developers to quickly enhance the ui of their application and can easily get started with the Flutter animation. The UI has been inspired from Redmi's uninstall application animation shown [here](https://github.com/mdg-soc-19/explode-view/blob/master/gif/explode-view-idea.gif).
 
 This project contains the features of Flutter Animation that are required to complete an amazing Flutter application.
 
-Explore how ExplodeView is made through this [blog](https://medium.com/mobile-development-group/flutter-explosion-animation-for-image-3dd5e2863427)
+Explore how ExplodeView is made through this [blog](https://medium.com/mobile-development-group/flutter-explosion-animation-for-image-3dd5e2863427).
 
 # Index
 * [Installing](#installing)
@@ -39,6 +31,8 @@ Explore how ExplodeView is made through this [blog](https://medium.com/mobile-de
 
 
 # Installing
+
+<img src="https://github.com/mdg-soc-19/explode-view/blob/master/gif/explode-view.gif?raw=true" height = "400px" align = "right"/>
 
 ### 1. Depend on it
 Add this to your package's `pubspec.yaml` file:
@@ -74,8 +68,8 @@ Now in your `Dart` code, you can use:
 import  'package:explode_view/explode_view.dart';
 ```
 
-
 # How To Use
+
 ## Let's get this animation
 For the explosion animation in the app, user has to simply add the `ExplodeView` as a child in any Widget like Stack and many more.
 
