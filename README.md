@@ -64,7 +64,8 @@ Alternatively, your editor might support  `flutter pub get`. Check the docs for 
   
 Now in your `Dart` code, you can use:   
   
-```dart import  'package:explode_view/explode_view.dart';  
+```dart 
+import  'package:explode_view/explode_view.dart';  
 ```  
   
 # How To Use  
@@ -74,15 +75,17 @@ For the explosion animation in the app, user has to simply add the `ExplodeView`
   
 Example Code:   
 ```dart 
-	ExplodeView(  
-	 imagePath: 'assets/images/abc.png',  // path where the image is stored 
-	 imagePosFromLeft: 	120.0, // set x-coordinate for image 
-	 imagePosFromRight: 300.0,  // set y-coordinate for image );
+ExplodeView(  
+ imagePath: 'assets/images/abc.png',  // path where the image is stored 
+ imagePosFromLeft: 	120.0, // set x-coordinate for image 
+ imagePosFromRight: 300.0,  // set y-coordinate for image 
+);
  ```  
 For more info, please refer to the `main.dart` in example.  
   
   
-# Algorithm The algorithm used to build this project is as follows:  
+# Algorithm 
+The algorithm used to build this project is as follows:  
   
 On clicking the image, the image would shake for some time and will disappear with generation of random particles in that image area and they would scatter farther with fading and upcoming transition and disappear finally on the screen. The colors of the particles are decided by the colors of the pixels of the image which provides the effect of breaking the image into pieces.  
   
