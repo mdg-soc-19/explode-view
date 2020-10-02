@@ -31,11 +31,15 @@ class ExplodeView extends StatelessWidget {
   /// The coordinates of the image from the top edge of the screen
   final double imagePosFromTop;
 
+  /// The bytes representation of an image
+  final ByteData imageBytes;
+
   /// The constructor for the ExplodeView class
   const ExplodeView(
-      {@required this.imagePath,
+      {this.imagePath,
       @required this.imagePosFromLeft,
-      @required this.imagePosFromTop});
+      @required this.imagePosFromTop,
+      this.imageBytes});
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +50,7 @@ class ExplodeView extends StatelessWidget {
       child: new ExplodeViewBody(
           screenSize: screenSize,
           imagePath: imagePath,
+          imageBytes: imageBytes,
           imagePosFromLeft: imagePosFromLeft,
           imagePosFromTop: imagePosFromTop),
     );
@@ -57,13 +62,15 @@ class ExplodeViewBody extends StatefulWidget {
   final String imagePath;
   final double imagePosFromLeft;
   final double imagePosFromTop;
+  final ByteData imageBytes;
 
   ExplodeViewBody(
       {Key key,
       @required this.screenSize,
-      @required this.imagePath,
+      this.imagePath,
       @required this.imagePosFromLeft,
-      @required this.imagePosFromTop})
+      @required this.imagePosFromTop,
+      this.imageBytes})
       : super(key: key);
 
   @override
@@ -311,12 +318,19 @@ class _ExplodeViewState extends State<ExplodeViewBody>
                                     widget.screenSize.height)),
                             child: Transform(
                               transform: Matrix4.translation(_shakeImage()),
-                              child: Image.asset(
-                                widget.imagePath,
-                                key: imageKey,
-                                width: imageSize,
-                                height: imageSize,
-                              ),
+                              child: widget.imagePath != null
+                                  ? Image.asset(
+                                      widget.imagePath,
+                                      key: imageKey,
+                                      width: imageSize,
+                                      height: imageSize,
+                                    )
+                                  : Image.memory(
+                                      widget.imageBytes.buffer.asUint8List(),
+                                      key: imageKey,
+                                      width: imageSize,
+                                      height: imageSize,
+                                    ),
                             ),
                           ),
                         ),
