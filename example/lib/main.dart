@@ -1,8 +1,31 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
+import 'package:path_provider/path_provider.dart';
+
 import 'package:explode_view/explode_view.dart';
 
-void main() => runApp(MyApp());
+Directory applicationDocumentsDirectory;
+File pathProviderDemoResultFile;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  applicationDocumentsDirectory = await getApplicationDocumentsDirectory();
+
+  // loading sample image asset in to memory
+  final ByteData sampleImage =
+      await rootBundle.load('assets/images/chrome.png');
+
+  // stores sample image in application documents directory
+  pathProviderDemoResultFile =
+      await File('${applicationDocumentsDirectory.path}/path_provider_demo.png')
+          .writeAsBytes(sampleImage.buffer.asUint8List());
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -43,10 +66,19 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Container(
             child: Stack(
           children: <Widget>[
-            ExplodeView(
-                imagePath: 'assets/images/swiggy.png',
-                imagePosFromLeft: 50.0,
-                imagePosFromTop: 200.0),
+            FutureBuilder<Uint8List>(
+              future: pathProviderDemoResultFile.readAsBytes(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData) {
+                  return ExplodeView(
+                      imageBytes: ByteData.view(snapshot.data.buffer),
+                      imagePosFromLeft: 50.0,
+                      imagePosFromTop: 200.0);
+                }
+                return Container();
+              },
+            ),
             ExplodeView(
                 imagePath: 'assets/images/chrome.png',
                 imagePosFromLeft: 200.0,
