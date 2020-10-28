@@ -17,7 +17,7 @@ void main() async {
 
   // loading sample image asset in to memory
   final ByteData sampleImage =
-      await rootBundle.load('assets/images/chrome.png');
+      await rootBundle.load('assets/images/swiggy.png');
 
   // stores sample image in application documents directory
   pathProviderDemoResultFile =
